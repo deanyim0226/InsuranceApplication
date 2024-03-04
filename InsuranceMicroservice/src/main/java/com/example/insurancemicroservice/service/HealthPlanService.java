@@ -1,6 +1,7 @@
 package com.example.insurancemicroservice.service;
 
 import com.example.insurancemicroservice.domain.HealthPlan;
+import com.example.insurancemicroservice.domain.PlanType;
 import com.example.insurancemicroservice.repository.HealthPlanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,5 +16,11 @@ public class HealthPlanService {
 
     public List<HealthPlan> getAllHealthPlans(){
         return healthPlanRepository.findAll();
+    }
+
+    public HealthPlan getHealthPlan(String healthType){
+
+
+        return healthPlanRepository.findByPlanType(PlanType.valueOf(healthType));
     }
 }

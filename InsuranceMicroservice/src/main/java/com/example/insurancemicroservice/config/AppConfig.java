@@ -43,3 +43,13 @@ public class AppConfig {
         return properties;
     }
 }
+
+/*
+Task 3 - Once payment is completed,
+send an email to the user with a link to upload the documents.
+ A user will upload the document.
+ Create a admin page to display all the insurance request,
+ he will verify all the document and
+ if he feels everything is fine he will approve the policy and
+ then email will trigger on the registered email id with policy document
+ */

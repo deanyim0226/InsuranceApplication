@@ -1,7 +1,7 @@
 <%@page language="java" contentType="text/html; ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="f"%>
-
+<%@taglib uri="http://www.springframework.org/security/tags" prefix="s"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,6 +22,9 @@
             height: 500px;
 
         }
+
+
+
     </style>
     <script src="../js/jquery-3.7.1.min.js"></script>
     <!--[if lt IE 8]><!-->
@@ -33,64 +36,137 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     -->
     <script>
+
         $(document).ready(function(){
+
+            $("#cardContainer").on("click", ".select", function() {
+                // Retrieve the data attributes
+                var categoryType = $(this).attr("data-category");
+                var healthPlanType = $(this).attr("data-healthPlan");
+
+                localStorage.setItem("planType", healthPlanType)
+                localStorage.setItem("categoryType", categoryType)
+
+                window.location.replace("userInfo")
+                // Example: You can use AJAX to send the selected data to the server
+                // $.post("your-server-url", { categoryType: categoryType, healthPlanType: healthPlanType }, function(response) {
+                //     console.log("Response from server:", response);
+                // });
+            });
+
+
+            let categories = [];
 
             $.ajax({
                 type:"GET",
-                url:"getAllHealthPlans",
+                url:"getAllCategories",
+                async:false,
                 success: function(response){
-                    alert("successfully retrieved health plans")
 
-
+                    $.each(response, function(index, category){
+                        categories.push(category);
+                    })
                 },
                 error:function(err){
                     alert("error while retrieving health plans")
                 }
             })
+
+
+            let healthPlans = [];
+
+            $.ajax({
+                type:"GET",
+                url:"getAllHealthPlans",
+                async:false,
+                success: function(response){
+
+                    $.each(response, function(index, healthPlan){
+                        healthPlan.category = categories;
+                        healthPlans.push(healthPlan);
+                    })
+                },
+                error:function(err){
+                    alert("error while retrieving health plans")
+                }
+            })
+
+            let insurance = {};
+
+            $.ajax({
+                type:"GET",
+                url:"getInsurance",
+                async:false,
+                success: function(response){
+                    insurance = response;
+                    insurance.plans = healthPlans;
+                    alert("successfully retrieved Insruance")
+                },
+                error:function(err){
+                    alert("error while retrieving health plans")
+                }
+            })
+
+            var header = $("#header");
+            header.append("<h1>"+ insurance.insuranceName + " Plans"+"</h1>")
+            var cardContainer = $("#cardContainer");
+
+            $.each(insurance.plans, function(healthIndex, healthPlans) {
+                // Create a wrapper card for each row
+                var wrapperCard = $("<div class='card'></div>");
+                cardContainer.append(wrapperCard);
+
+                var headerRow = $("<div class='row justify-content-center'></div>");
+                wrapperCard.append(headerRow);
+
+                var rowHeader = $("<h1 class='text-center'>" + healthPlans.planType + "</h1>");
+                headerRow.append(rowHeader);
+
+                var cardsRow = $("<div class='row mb-3'></div>");
+                wrapperCard.append(cardsRow);
+
+                $.each(healthPlans.category, function(categoryIndex, category) {
+                    var cardContainer = $("<div class='col-3 mb-3'></div>"); // Added mb-3 for margin bottom
+
+                    var card = $("<div class='card'></div>");
+                    var cardBody = $("<div class='card-body'></div>");
+                    var cardTitle = $("<h3 class='card-title'>" + category.categoryType + "</h3>");
+                    var cardText1 = $("<p class='card-text'>" + category.description + "</p>");
+                    var cardText2 = $("<p class='card-text'>" + category.feature + "</p>");
+                    var cardText3 = $("<p class='card-text'><strong>" + "Decuctible"  +"</strong> $" + category.deductible + "</p>");
+                    var cardText4 = $("<p class='card-text'><strong>" + "Co-Payment"  +"</strong> $" + category.coPayment + "</p>");
+                    var cardText5 = $("<p class='card-text'><strong>" + "MaxOutOfPocket" +"</strong> $" + category.maxOutOfPocket + "</p>");
+
+                    let monthlyFee = parseInt(category.price) + parseInt(healthPlans.monthlyFee)
+                    var cardText6 = $("<p class='card-text'><strong>" + "Montly Fee" +"</strong> $" + monthlyFee+ "</p>");
+                    var cardText7 = $("<input data-category='"+category.categoryType+"' data-healthPlan='"+healthPlans.planType+"' type='submit' class='select btn-default' value='Select'/>")
+
+                    cardBody.append(cardTitle);
+                    cardBody.append(cardText1);
+                    cardBody.append(cardText2);
+                    cardBody.append(cardText3);
+                    cardBody.append(cardText4);
+                    cardBody.append(cardText5);
+                    cardBody.append(cardText6);
+                    cardBody.append(cardText7);
+                    card.append(cardBody);
+
+                    cardContainer.append(card);
+                    cardsRow.append(cardContainer);
+                });
+            });
+
         })
     </script>
 </head>
 <body>
 
+<div id="header" align="center">
 
-<div align="center">
-    <h1>PLAN</h1>
-    <div class="row">
-        <div class="col-4">
-            <h3>HMO</h3>
-            <p> * Primarily revolve around a primary care physician (PCP).
-                <br> * Everything is determined and coordinated through your PCP.
-                <br> * All care falls within your local network of healthcare providers.
-            </p>
-            <div class="text-center">
-                <a href="category?plan=something"  class="btn-default">select </a>
-            </div>
-            </div>
-        <div class="col-4">
-            <h3>EPO</h3>
-            <p> * Primarily revolve around a primary care physician (PCP).
-                <br> * Everything is determined and coordinated through your PCP.
-                <br> * All care falls within your local network of healthcare providers.
-            </p>
-            <div class="text-center">
-                <a href="category?plan=something" class="btn-default">select </a>
-            </div>
-        </div>
-        <div class="col-4">
-            <h3>PPO</h3>
-            <p> * Primarily revolve around a primary care physician (PCP).
-                <br> * Everything is determined and coordinated through your PCP.
-                <br> * All care falls within your local network of healthcare providers.
-            </p>
-            <div class="text-center">
-                <a href="category?plan=something"  class="btn-default">select </a>
-            </div>
-        </div>
-
-    </div>
 </div>
+<div id=cardContainer align="center">
 
-
+</div>
 
 </body>
 </html>

@@ -1,7 +1,9 @@
 package com.example.insurancegateway.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,18 +17,10 @@ public class Role {
 
     private String description;
 
-    @ManyToMany(mappedBy = "roles")
-    private List<User> users;
 
-    @Override
-    public String toString() {
-        return "Role{" +
-                "roleId=" + roleId +
-                ", roleName='" + roleName + '\'' +
-                ", description='" + description + '\'' +
-                ", users=" + users +
-                '}';
-    }
+    @ManyToMany(mappedBy = "roles")
+    @JsonBackReference
+    private List<User> users = new ArrayList<>();
 
     public Long getRoleId() {
         return roleId;
@@ -59,7 +53,6 @@ public class Role {
     public void setUsers(List<User> users) {
         this.users = users;
     }
-
 
 
 }

@@ -23,19 +23,6 @@ public class Category {
     private double price;
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<HealthPlan> healthPlans;
-
-    public Set<HealthPlan> getHealthPlans() {
-        return healthPlans;
-    }
-
-    public void setHealthPlans(Set<HealthPlan> healthPlans) {
-        this.healthPlans = healthPlans;
-    }
-
-
-
     public Long getCategoryId() {
         return categoryId;
     }

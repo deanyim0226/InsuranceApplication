@@ -21,4 +21,16 @@ public class HealthPlanClient {
 
         return healthPlans;
     }
+
+    public JsonNode getHealthPlan(String healthType){
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<Object> responseEntity = restTemplate.getForEntity("http://localhost:8181/getHealthPlanByType/"+healthType, Object.class);
+
+        Object obj = responseEntity.getBody();
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode healthPlan = mapper.convertValue(obj,JsonNode.class);
+
+        return healthPlan;
+    }
 }

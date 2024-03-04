@@ -17,19 +17,17 @@ public class HealthPlan {
     private String description;
 
     private double monthlyFee;
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Category> category;
 
-    public Set<Category> getCategory() {
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Category> category;
+
+    public List<Category> getCategory() {
         return category;
     }
 
-    public void setCategory(Set<Category> category) {
+    public void setCategory(List<Category> category) {
         this.category = category;
     }
-
-
-
 
     public Long getPlanId() {
         return planId;

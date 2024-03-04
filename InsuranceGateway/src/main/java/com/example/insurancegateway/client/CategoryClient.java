@@ -20,6 +20,18 @@ public class CategoryClient {
         JsonNode categories = mapper.convertValue(obj, JsonNode.class);
 
         return categories;
+    }
 
+    public JsonNode getCategoryByType(String categoryType){
+
+        RestTemplate template = new RestTemplate();
+        ResponseEntity responseEntity = template.getForEntity("http://localhost:8181/getCategoryByType/"+ categoryType, Object.class);
+
+        Object obj = responseEntity.getBody();
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode category = mapper.convertValue(obj, JsonNode.class);
+
+
+        return category;
     }
 }

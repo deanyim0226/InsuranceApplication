@@ -15,7 +15,7 @@ public class HealthInsurance {
     private String insuranceName;
 
     @OneToMany(fetch = FetchType.EAGER)
-    private List<HealthPlan> Plans; //one to many
+    private List<HealthPlan> plans; //one to many
 
     public Long getInsuranceId() {
         return insuranceId;
@@ -34,11 +34,11 @@ public class HealthInsurance {
     }
 
     public List<HealthPlan> getPlans() {
-        return Plans;
+        return plans;
     }
 
     public void setPlans(List<HealthPlan> plans) {
-        Plans = plans;
+        plans = plans;
     }
 
 

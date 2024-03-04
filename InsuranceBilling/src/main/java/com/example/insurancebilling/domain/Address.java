@@ -1,4 +1,5 @@
-package com.example.insurancegateway.domain;
+package com.example.insurancebilling.domain;
+
 
 import jakarta.persistence.Embeddable;
 

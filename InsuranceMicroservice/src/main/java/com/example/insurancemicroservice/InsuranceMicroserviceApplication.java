@@ -16,5 +16,9 @@ public class InsuranceMicroserviceApplication {
 	 * HMO Limited access to network, no out-of-network benefits, referral required
 	 * EPO Full access to network, no out-of-network benefits, no referral required, affordable premiums
 	 * PPO FUll access to network, out-of-network benefits, no referral required, higher premiums
+	 *
+	 *
+	 * sercet key open api
+	 * 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
 	 */
 }

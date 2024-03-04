@@ -1,3 +1,7 @@
+<%@page language="java" contentType="text/html; ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="f"%>
+<%@taglib uri="http://www.springframework.org/security/tags" prefix="s"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,8 +34,13 @@
         $(document).ready(function(){
             $("#getFreeQuote").click(function(){
 
-                window.location.replace("address");
+                window.location.replace("quote");
+            })
 
+            $("#getQuote").click(function(){
+
+                window.location.replace("plan");
+                return false;
             })
         })
     </script>
@@ -84,7 +93,27 @@
                         <a href="contactUs">Contact</a>
                     </li>
                     <li>
-                        <a href="#" class="btn-default">Buy Pro Version</a>
+                        <a href="chat">Chat</a>
+                    </li>
+                    <s:authorize access="isAuthenticated()">
+                        <s:authorize access="hasAuthority('Admin')">
+                            <li>
+                                <a href="management">Management</a>
+                            </li>
+                        </s:authorize>
+                        <s:authorize access="hasAuthority('Customer')">
+                        <li>
+                            <a href="profile">Dashboard</a>
+                        </li>
+                        </s:authorize>
+                    <li>
+                        <a href="logout" class="btn-default">Logout</a>
+                    </li>
+                    </s:authorize>
+                        <li>
+                        <s:authorize access="!isAuthenticated()">
+                            <a href="login" class="btn-default">login</a>
+                        </s:authorize>
                     </li>
                 </ul>
             </div>
@@ -171,14 +200,17 @@
                         <div class="form-select">
                             <span></span>
                             <select>
-                                <option>Product</option>
+                                <option>Health Insurance</option>
+                                <option>Travel Insurance</option>
+                                <option>Life Insurance</option>
+                                <option>Auto Insurance</option>
                             </select>
                         </div>
                         <div>
                             <textarea rows="1" cols="1" placeholder="Message"></textarea>
                         </div>
                         <div class="text-center">
-                            <input type="submit" class="btn-default" value="Get Free Quote" />
+                            <input id="getQuote" type="submit" class="btn-default" value="Get Free Quote" />
                         </div>
                     </form>
                 </div>
@@ -189,19 +221,19 @@
         <div class="container">
             <div class="row">
                 <div id="parentVerticalTab">
-                    <h2>Products</h2>
+                    <h2>Types of Insurance</h2>
                     <ul class="resp-tabs-list hor_1 col-sm-3 col-md-3 col-lg-3">
-                        <li><i class="ti-home"></i> House Insurance</li>
+                        <li><i class="ti-home"></i> Health Insurance</li>
                         <li><i class="fa fa-plane"></i> Travel Insurance</li>
-                        <li><i class="ti-heart-broken"></i> Health Insurance</li>
-                        <li><i class="ti-car"></i> Car Insurance</li>
+                        <li><i class="ti-heart-broken"></i> Life Insurance</li>
+                        <li><i class="ti-car"></i> Auto Insurance</li>
                     </ul>
                     <div class="col-sm-5 col-md-5 col-lg-5 resp-tabs-container hor_1">
                         <div>
                             <div class="prod-tab-content">
                                 <h4>
                                     <span class="prod-cion"><i class="ti-home"></i></span>
-                                    House Insurance
+                                    Health Insurance
                                 </h4>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nibh urna, euismod ut ornare non, volutpat vel tortor. Integer</p>
                                 <p>et placerat suscipit. Sed sodales scelerisque commodo. Nam porta cursus lectus. </p>
@@ -209,7 +241,7 @@
                                     <i class="fa fa-phone"></i> +123 456 7890 <span>Toll Free</span>
                                 </p>
                                 <p>
-                                    <a class="btn-default" href="product-houseinsurance.html">Get Free Quote</a>
+                                    <a id="getFreeQuote" class="btn-default" href="#">Get Free Quote</a>
                                 </p>
                             </div>
                             <img src="images/product-img.jpg" alt="" class="img-responsive" />
@@ -226,7 +258,7 @@
                                     <i class="fa fa-phone"></i> +123 456 7890 <span>Toll Free</span>
                                 </p>
                                 <p>
-                                    <a class="btn-default" href="#">Get Free Quote</a>
+                                    <a id="" class="btn-default" href="#">Get Free Quote</a>
                                 </p>
                             </div>
                             <img src="images/1.jpg" alt="" class="img-responsive" />
@@ -235,7 +267,7 @@
                             <div class="prod-tab-content">
                                 <h4>
                                     <span class="prod-cion"><i class="ti-heart-broken"></i></span>
-                                    Health Insurance
+                                    Life Insurance
                                 </h4>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nibh urna, euismod ut ornare non, volutpat vel tortor. Integer</p>
                                 <p>et placerat suscipit. Sed sodales scelerisque commodo. Nam porta cursus lectus. </p>
@@ -243,7 +275,7 @@
                                     <i class="fa fa-phone"></i> +123 456 7890 <span>Toll Free</span>
                                 </p>
                                 <p>
-                                    <a id="getFreeQuote" class="btn-default" href="#">Get Free Quote</a>
+                                    <a id="" class="btn-default" href="#">Get Free Quote</a>
                                 </p>
                             </div>
                             <img src="images/3.jpg" alt="" class="img-responsive" />
@@ -252,7 +284,7 @@
                             <div class="prod-tab-content">
                                 <h4>
                                     <span class="prod-cion"><i class="ti-car"></i></span>
-                                    Car Insurance
+                                    Auto Insurance
                                 </h4>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nibh urna, euismod ut ornare non, volutpat vel tortor. Integer</p>
                                 <p>et placerat suscipit. Sed sodales scelerisque commodo. Nam porta cursus lectus. </p>
@@ -260,7 +292,7 @@
                                     <i class="fa fa-phone"></i> +123 456 7890 <span>Toll Free</span>
                                 </p>
                                 <p>
-                                    <a class="btn-default" href="#">Get Free Quote</a>
+                                    <a id="" class="btn-default" href="#">Get Free Quote</a>
                                 </p>
                             </div>
                             <img src="images/2.jpg" alt="" class="img-responsive" />

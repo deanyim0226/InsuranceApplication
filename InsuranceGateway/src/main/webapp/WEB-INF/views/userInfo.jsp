@@ -1,6 +1,7 @@
 <%@page language="java" contentType="text/html; ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="f"%>
+<%@taglib uri="http://www.springframework.org/security/tags" prefix="s"%>
 
 <!DOCTYPE html>
 <html>
@@ -32,6 +33,22 @@
     <script>
         $(document).ready(function(){
 
+            $("#next").click(function() {
+                let firstName = $("#firstName").val();
+                let lastName = $("#lastName").val();
+                let gender = $("#gender").val();
+                let dateOfBirth = $("#dob").val();
+                let income = $("#income").val();
+                let mobileNo = $("#phoneNo").val();
+                let email = $("#email").val();
+
+                let user = {email,firstName,  lastName, gender, dateOfBirth, income, mobileNo}
+
+                localStorage.setItem("user",JSON.stringify(user));
+
+            })
+
+
         })
     </script>
 </head>
@@ -39,45 +56,65 @@
 
 
 <div class="get-quote-form">
-    <h2>Get a free quote form</h2>
+    <h2>User-Info Form</h2>
 
     <form class="quote-body" id="get-quote">
+        <h3>Primary Applicant</h3>
 
+        <div class="row">
 
-        <div class="col-md-6">
-            <label for="firstName" class="form-label">First Name</label>
-            <input type="text" name="name" id="firstName" placeholder="First Name" />
-        </div>
-        <div class="col-md-6">
-            <label for="lastName" class="form-label">Last Name</label>
-            <input type="text" name="email" id="lastName" placeholder="Last Name" />
-        </div>
-
-        <div class="col-md-6">
-            <label for="inputAddress1" class="form-label">Income</label>
-            <input type="text" name="name" id="inputAddress1" placeholder="Income" />
-        </div>
-        <div class="col-md-6">
-            <label for="inputAddress2" class="form-label">DOB</label>
-            <input type="text" name="email" id="inputAddress2" placeholder="Date of Birth" />
+            <div class="col-md-6">
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="text" name="name" id="firstName" placeholder="First Name" />
+            </div>
+            <div class="col-md-6">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input type="text" name="email" id="lastName" placeholder="Last Name" />
+            </div>
         </div>
 
-        <div class="col-md-12">
-            <label for="phoneNo" class="form-label">Mobile No.</label>
-            <input type="text" name="ph-no" id="phoneNo" placeholder="Phone no" />
+        <div class="row">
+            <div class="col-md-6">
+                <label for="dob" class="form-label">DOB</label>
+                <input type="date" class="form-control" name="dob" id="dob" placeholder="Date of Birth" />
+            </div>
+
+            <div class="col-md-6">
+                <label for="gender" class="form-label">Gender</label>
+                <select id="gender">
+                    <c:forEach items="${genders}" var="gender">
+                        <option label="${gender}" value="${gender}"></option>
+                    </c:forEach>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-4">
+                <label for="email" class="form-label">Email</label>
+                <input type="text" name="email" id="email" placeholder="Email" />
+            </div>
+
+            <div class="col-md-4">
+                <label for="income" class="form-label">Income</label>
+                <input type="text" name="name" id="income" placeholder="Income" />
+            </div>
+
+            <div class="col-md-4">
+                <label for="phoneNo" class="form-label">Mobile No.</label>
+                <input type="text" name="ph-no" id="phoneNo" placeholder="Phone no" />
+            </div>
+
         </div>
 
         <div class="text-center">
-            <a href="address" id="back" class="btn-default">Back </a>
-            <a href="plan" id="next" class="btn-default">Next </a>
+            <a href="address" id="next"  class="btn-default">Next </a>
         </div>
-
-
-
     </form>
+
+
 </div>
-
-
 
 </body>
 </html>

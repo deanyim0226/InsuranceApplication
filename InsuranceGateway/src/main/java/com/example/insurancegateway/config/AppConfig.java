@@ -2,10 +2,15 @@ package com.example.insurancegateway.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
@@ -14,6 +19,7 @@ import java.util.Properties;
 
 @Configuration
 public class AppConfig {
+
 
     @Bean
     public DataSource dataSource(){
@@ -27,6 +33,7 @@ public class AppConfig {
 
 
     @Bean
+    @Primary
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(){
 
         LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
@@ -36,6 +43,17 @@ public class AppConfig {
         entityManagerFactory.setPackagesToScan("com.example.insurancegateway.domain");
 
         return entityManagerFactory;
+    }
+
+    @Bean
+    public LocalSessionFactoryBean sessionFactory(){
+        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+        sessionFactory.setDataSource(dataSource());
+        sessionFactory.setAnnotatedPackages("com.example.insurancegateway.domain");
+        sessionFactory.setPackagesToScan("com.example.insurancegateway.domain");
+        sessionFactory.setHibernateProperties(properties());
+
+        return sessionFactory;
     }
 
     public Properties properties(){
@@ -55,5 +73,12 @@ public class AppConfig {
         viewResolver.setViewClass(JstlView.class);
 
         return viewResolver;
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder(){
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        return encoder;
     }
 }
